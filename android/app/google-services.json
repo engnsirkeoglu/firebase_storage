@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "959748653746",
+    "project_id": "fir-storage-f3868",
+    "storage_bucket": "fir-storage-f3868.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:959748653746:android:87199a71977ee921027fab",
+        "android_client_info": {
+          "package_name": "com.esir.flutterstorage"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "959748653746-6gr50eu22qboi692osu9nlg5lldomiu1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBx4ulp4R5-dOvEb-qenKfDbsQHstDn-xs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "959748653746-6gr50eu22qboi692osu9nlg5lldomiu1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
