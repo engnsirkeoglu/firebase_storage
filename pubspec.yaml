@@ -49,6 +49,8 @@ dependencies:
   # Fotoğraf Kırpmak İçin
   image_cropper: ^3.0.2
   uuid: ^3.0.7
+  # Mevcut Cihaz Bilgilerini Almamızı Sağlar
+  device_info_plus: ^8.1.0
  
 
 dev_dependencies:

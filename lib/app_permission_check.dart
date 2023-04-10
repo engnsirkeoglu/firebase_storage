@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutterstorage/mixin/android_device_info.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 abstract class IAppPermissionCheck {
@@ -5,7 +8,9 @@ abstract class IAppPermissionCheck {
   Future<bool> permissionMediaLibrary();
 }
 
-class AppPermissionCheck implements IAppPermissionCheck {
+class AppPermissionCheck
+    with AndroidDeviceInfoMixin
+    implements IAppPermissionCheck {
   // Camera access permission check
   @override
   Future<bool> permissionCamera() async {
@@ -15,6 +20,11 @@ class AppPermissionCheck implements IAppPermissionCheck {
   // Media Library access permission check
   @override
   Future<bool> permissionMediaLibrary() async {
+    if (Platform.isAndroid) {
+      if (await androidSdkVersion() < 33) {
+        return await _permissionCheckController(permission: Permission.storage);
+      }
+    }
     return await _permissionCheckController(permission: Permission.photos);
   }
 

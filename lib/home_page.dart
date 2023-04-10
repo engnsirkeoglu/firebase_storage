@@ -50,6 +50,7 @@ class _HomePageState extends State<HomePage> {
           ElevatedButton(
               onPressed: () {
                 FirebaseStorageServiceManager().deleteImage(imageURL: imageURL);
+                print('Platform :${Platform.isAndroid}');
                 setState(() {});
               },
               child: Text('Sil')),
