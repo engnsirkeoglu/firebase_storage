@@ -30,7 +30,14 @@ class _HomePageState extends State<HomePage> {
           ElevatedButton.icon(
             onPressed: () async {
               _image = await PickManager().fetchImageWithMediaLibrary();
-
+              setState(() {});
+            },
+            icon: const Icon(Icons.perm_media_rounded),
+            label: Text(_mediaTitle),
+          ),
+          _image != null ? Image.file(_image!) : SizedBox.shrink(),
+          ElevatedButton(
+            onPressed: () async {
               if (_image != null) {
                 imageURL = await FirebaseStorageServiceManager()
                     .uploadBumuPhotos(file: _image!);
@@ -38,10 +45,8 @@ class _HomePageState extends State<HomePage> {
                 setState(() {});
               }
             },
-            icon: const Icon(Icons.perm_media_rounded),
-            label: Text(_mediaTitle),
+            child: Text('Gönder'),
           ),
-          _image != null ? Image.file(_image!) : SizedBox.shrink(),
           // Sorunlu Kısım
         ],
       ),
