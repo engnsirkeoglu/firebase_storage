@@ -17,7 +17,6 @@ class _HomePageState extends State<HomePage> {
   final String _appBarTitle = 'Storage Kullanımı';
   final String _mediaTitle = 'Gallery';
   File? _image;
-  CroppedFile? _image2;
   String? imageURL;
 
   @override
@@ -30,10 +29,11 @@ class _HomePageState extends State<HomePage> {
         children: [
           ElevatedButton.icon(
             onPressed: () async {
-              final _image = await PickManager().fetchImageWithMediaLibrary();
+              _image = await PickManager().fetchImageWithMediaLibrary();
+
               if (_image != null) {
                 imageURL = await FirebaseStorageServiceManager()
-                    .uploadBumuPhotos(file: _image);
+                    .uploadBumuPhotos(file: _image!);
                 print(imageURL);
                 setState(() {});
               }
@@ -41,8 +41,8 @@ class _HomePageState extends State<HomePage> {
             icon: const Icon(Icons.perm_media_rounded),
             label: Text(_mediaTitle),
           ),
-          _FutureByteImage(image: _image), // Sorunlu Kısım
-          _ByteImage(image: _image2),
+          _image != null ? Image.file(_image!) : SizedBox.shrink(),
+          // Sorunlu Kısım
         ],
       ),
     );
@@ -55,28 +55,6 @@ class _FutureByteImage extends StatelessWidget {
   }) : _image = image;
 
   final File? _image;
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _image?.readAsBytes(),
-      builder: (context, AsyncSnapshot<Uint8List?> snapshot) {
-        if (snapshot.hasData) {
-          return Image.memory(snapshot.data!);
-        }
-        return const SizedBox();
-      },
-    );
-  }
-}
-
-class _ByteImage extends StatelessWidget {
-  const _ByteImage({
-    super.key,
-    required CroppedFile? image,
-  }) : _image = image;
-
-  final CroppedFile? _image;
 
   @override
   Widget build(BuildContext context) {
