@@ -35,7 +35,7 @@ dependencies:
   cupertino_icons: ^1.0.2
 
   #Firebase Core
-  firebase_core: ^2.8.0
+  firebase_core: ^2.11.0
 
   #Firebase Storage
 
@@ -51,6 +51,9 @@ dependencies:
   uuid: ^3.0.7
   # Mevcut Cihaz Bilgilerini Almamızı Sağlar
   device_info_plus: ^8.1.0
+  flutter_image_compress: ^1.1.3
+
+  intl: ^0.17.0
  
 
 dev_dependencies:

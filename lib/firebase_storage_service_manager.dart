@@ -1,33 +1,24 @@
 import 'dart:io';
 
 import 'package:flutterstorage/service/firebase_storage_service.dart';
-import 'mixin/image_name_generator_mixin.dart';
+import 'package:intl/intl.dart';
 
-class FirebaseStorageServiceManager with RandomImageNameGenerator {
-  final FirebaseStorageService storageService = FirebaseStorageService();
-  // Resmi yükleyen fonksiyon
-  @override
-  Future<String?> uploadImage({required String? croppedImagePath}) async {
-    if (croppedImagePath != null) {
-      File file = File(croppedImagePath);
-      String? imageURL = await storageService.uploadImage(
-          file: file, imageName: getRandomImageName());
-      return imageURL;
-    }
+class FirebaseStorageServiceManager {
+  Future<String?> uploadProfilPhoto({required File file}) async {
+    String path = 'images/uid/profilPhotos/${_generateImageName()}';
+    return await FirebaseStorageService().uploadImage(file: file, path: path);
   }
 
-  // Resim yolunu veren fonksiyon
-  String? getImagePath({required String? imageURL}) {
-    if (imageURL != null) {
-      final Uri uri = Uri.parse(imageURL);
-      final String imagePath = uri.pathSegments.last;
-      return imagePath;
-    }
-    return null;
+  Future<String?> uploadBumuPhotos({required File file}) async {
+    String path = 'images/uid/bumuPhotos/bumuId/${_generateImageName()}';
+    return await FirebaseStorageService().uploadImage(file: file, path: path);
   }
 
-  Future<void> deleteImage({required String? imageURL}) async {
-    await storageService.deleteImage(
-        imagePath: getImagePath(imageURL: imageURL));
+  String _generateImageName() {
+    final now = DateTime.now();
+    final formatter = DateFormat('yyyyMMdd_HHmmss_SSS');
+    final timestamp = formatter.format(now);
+    final imageName = '$timestamp.png';
+    return imageName;
   }
 }

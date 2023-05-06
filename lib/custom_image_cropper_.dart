@@ -19,13 +19,13 @@ class ImageCrop implements IImageCrop {
       ],
       uiSettings: [
         AndroidUiSettings(
-            toolbarTitle: 'Cropper',
+            toolbarTitle: 'Bumula',
             toolbarColor: Colors.deepOrange,
             toolbarWidgetColor: Colors.white,
             initAspectRatio: CropAspectRatioPreset.original,
             lockAspectRatio: false),
         IOSUiSettings(
-          title: 'Cropper',
+          title: 'Bumula',
         ),
       ],
     );

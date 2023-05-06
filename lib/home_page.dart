@@ -2,12 +2,8 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:flutterstorage/enum/storage_folder_enum.dart';
 import 'package:flutterstorage/firebase_storage_service_manager.dart';
-import 'package:flutterstorage/image_cropper_manager.dart';
 import 'package:flutterstorage/pick_image_manager.dart';
-import 'package:flutterstorage/service/firebase_storage_service.dart';
-import 'package:flutterstorage/uuid_generator.dart';
 import 'package:image_cropper/image_cropper.dart';
 
 class HomePage extends StatefulWidget {
@@ -20,7 +16,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final String _appBarTitle = 'Storage Kullanımı';
   final String _mediaTitle = 'Gallery';
-  CroppedFile? _image;
+  File? _image;
+  CroppedFile? _image2;
   String? imageURL;
 
   @override
@@ -33,28 +30,19 @@ class _HomePageState extends State<HomePage> {
         children: [
           ElevatedButton.icon(
             onPressed: () async {
-              final image = await PickManager().fetchImageWithMediaLibrary();
-              if (image != null) {
-                _image = await ImageCrop().imageCrop(path: image.path);
+              final _image = await PickManager().fetchImageWithMediaLibrary();
+              if (_image != null) {
                 imageURL = await FirebaseStorageServiceManager()
-                    .uploadImage(croppedImagePath: _image!.path);
-                String? imageName = FirebaseStorageServiceManager()
-                    .getImagePath(imageURL: imageURL);
-                print(imageName); // prints 'myimage.jpg'
+                    .uploadBumuPhotos(file: _image);
+                print(imageURL);
+                setState(() {});
               }
-              setState(() {});
             },
             icon: const Icon(Icons.perm_media_rounded),
             label: Text(_mediaTitle),
           ),
-          ElevatedButton(
-              onPressed: () {
-                FirebaseStorageServiceManager().deleteImage(imageURL: imageURL);
-                print('Platform :${Platform.isAndroid}');
-                setState(() {});
-              },
-              child: Text('Sil')),
-          _FutureByteImage(image: _image)
+          _FutureByteImage(image: _image), // Sorunlu Kısım
+          _ByteImage(image: _image2),
         ],
       ),
     );
@@ -63,6 +51,27 @@ class _HomePageState extends State<HomePage> {
 
 class _FutureByteImage extends StatelessWidget {
   const _FutureByteImage({
+    required File? image,
+  }) : _image = image;
+
+  final File? _image;
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: _image?.readAsBytes(),
+      builder: (context, AsyncSnapshot<Uint8List?> snapshot) {
+        if (snapshot.hasData) {
+          return Image.memory(snapshot.data!);
+        }
+        return const SizedBox();
+      },
+    );
+  }
+}
+
+class _ByteImage extends StatelessWidget {
+  const _ByteImage({
     super.key,
     required CroppedFile? image,
   }) : _image = image;
